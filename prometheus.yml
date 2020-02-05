@@ -1,0 +1,45 @@
+global:
+  scrape_interval:     15s # 默认抓取间隔, 15秒向目标抓取一次数据。
+  evaluation_interval: 15s
+
+#alerting:
+# alertmanagers:
+# - static_configs:
+#   - targets: ["192.168.217.132:9093"]
+
+#rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"  
+
+# 这里表示抓取对象的配
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    # metrics_path defaults to '/metrics'gauge
+    # scheme defaults to 'http'.
+    scrape_interval: 5s
+    static_configs:
+    - targets: ['192.168.217.133:9090']
+
+
+  - job_name: 'pushgaugegateway'
+    scrape_interval: 8s
+    static_configs:
+    - targets: ['192.168.217.133:9091']
+
+url:
+  url1: 192.168.217.133
+  url2: 192.168.217.132
+  url3: 192.168.217.131
+
+gauge:
+  name: ping
+  documentation: 检测最大响应时间
+  labelnames: ['dst_ip','city']
+  city1: 'taiyuan'
+  city2: 'beijing'
+
+
+
+
+
