@@ -4,7 +4,6 @@ import os
 import queue
 import abc
 import logging
-
 import sys
 import yaml
 import daemon
@@ -24,11 +23,12 @@ logging.basicConfig(
 class Base_push(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def ping_test(self):
-        pass
+        raise NotImplementedError
+
 
     @abc.abstractmethod
     def requests_test(self):
-        pass
+        raise NotImplementedError
 
 
 class Sub_push(Base_push):
@@ -56,12 +56,12 @@ class Requests_Response():
         self.filename = os.path.join(os.path.dirname(__file__), 'pingconf.yml').replace("\\", "/")
         self.f = open(self.filename)
         self.y = yaml.load(self.f, Loader=yaml.FullLoader)
-        self.start_ip = self.y['pingip']['start_ip']
+        self.start_ip = self.y['pingip']['start_ip'][0]
         self.ip_ports = self.y['webping']['ip_ports']
-        self.targets = self.y['pushgateway']['targets']
+        self.targets = self.y['pushgateway']['targets'][0]
         self.type = self.y['pushgateway']['type'][1]
         self.registry = CollectorRegistry()
-        self.push_gate()
+        # self.push_gate()
 
     def get_response(self, url):
         timestamp = time.time()
@@ -139,9 +139,9 @@ class creatpinger:
         self.filename = os.path.join(os.path.dirname(__file__), 'pingconf.yml').replace("\\", "/")
         self.f = open(self.filename)
         self.y = yaml.load(self.f, Loader=yaml.FullLoader)
-        self.start_ip = self.y['pingip']['start_ip']
+        self.start_ip = self.y['pingip']['start_ip'][0]
         self.allcount = self.y['pingip']['allcount']
-        self.targets = self.y['pushgateway']['targets']
+        self.targets = self.y['pushgateway']['targets'][0]
         self.type = self.y['pushgateway']['type'][0]
         self.queue = queue
         self.pingCount = pingCount
